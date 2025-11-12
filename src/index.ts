@@ -120,7 +120,6 @@ io.on('connection', (socket) => {
     }
   });
 
-  // ★★★ ここを修正しました (showResults) ★★★
   socket.on('admin:showResults', () => {
     console.log('結果発表イベントを受信');
     if (appState.quizMode === 'reveal_answer') {
@@ -203,6 +202,13 @@ io.on('connection', (socket) => {
     appState.winners = appState.winners.filter(id => id !== playerId);
     
     broadcastState();
+  });
+
+  // ★ (機能追加) 全履歴を削除するイベント
+  socket.on('admin:clearHistory', () => {
+    console.log('全履歴の削除イベントを受信');
+    appState.history = []; // 履歴配列を空にする
+    broadcastState(); // 全員に最新の状態を送信
   });
 
 
